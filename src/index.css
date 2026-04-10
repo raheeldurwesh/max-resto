@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #0e0e10;
+    color: #f0ede8;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #16161a; }
+  ::-webkit-scrollbar-thumb { background: #2e2e38; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+}
+
+@layer components {
+  /* ── Buttons ─────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           font-body font-semibold text-sm
+           px-5 py-2.5 rounded-xl
+           transition-all duration-200
+           disabled:opacity-40 disabled:cursor-not-allowed
+           active:scale-95;
+  }
+  .btn-amber {
+    @apply btn bg-amber text-base
+           hover:bg-amber-dim hover:shadow-amber
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber/50;
+  }
+  .btn-ghost {
+    @apply btn border border-border text-mid
+           hover:border-amber/40 hover:text-bright hover:bg-amber-soft;
+  }
+  .btn-danger {
+    @apply btn bg-danger/10 border border-danger/30 text-danger
+           hover:bg-danger/20;
+  }
+  .btn-icon {
+    @apply w-9 h-9 flex items-center justify-center rounded-xl border border-border text-mid
+           hover:border-amber/40 hover:text-amber hover:bg-amber-soft
+           transition-all duration-200 active:scale-90;
+  }
+
+  /* ── Cards ───────────────────────────────────────── */
+  .card {
+    @apply bg-card border border-border rounded-2xl shadow-card;
+  }
+  .card-raised {
+    @apply bg-raised border border-border rounded-2xl shadow-lifted;
+  }
+
+  /* ── Form inputs ─────────────────────────────────── */
+  .input {
+    @apply w-full bg-raised border border-border rounded-xl
+           text-bright placeholder-faint font-body text-sm
+           px-4 py-2.5 outline-none
+           transition-all duration-200
+           focus:border-amber/50 focus:ring-2 focus:ring-amber/10;
+  }
+  .label {
+    @apply block text-mid text-xs font-semibold uppercase tracking-wider mb-1.5;
+  }
+
+  /* ── Status badges ───────────────────────────────── */
+  .badge-pending {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+           bg-pending/10 border border-pending/30 text-pending text-xs font-semibold;
+  }
+  .badge-preparing {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+           bg-preparing/10 border border-preparing/30 text-preparing text-xs font-semibold;
+  }
+  .badge-done {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+           bg-done/10 border border-done/30 text-done text-xs font-semibold;
+  }
+
+  /* ── Section heading ─────────────────────────────── */
+  .section-title {
+    @apply font-display font-semibold text-bright tracking-tight;
+  }
+
+  /* ── Glass header ────────────────────────────────── */
+  .glass {
+    background: rgba(22, 22, 26, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .text-amber-gradient {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ── PATCH v2 ─────────────────────────────────────────────────────────────── */
+
+/* Fix: instructions textarea placeholder contrast on dark theme */
+textarea.input::placeholder,
+input.input::placeholder {
+  color: #6b7280;   /* visible mid-grey — was too faint */
+  opacity: 1;
+}
+
+/* High-contrast instruction textarea variant */
+.input-instructions {
+  @apply w-full rounded-xl font-body text-sm px-4 py-3 outline-none resize-none
+         transition-all duration-200;
+  background:   #1e1e24;          /* slightly lighter than surface */
+  border:       1.5px solid rgba(245, 158, 11, 0.25);
+  color:        #f0ede8;          /* bright text */
+  placeholder-color: #9ca3af;
+}
+.input-instructions:focus {
+  border-color: rgba(245, 158, 11, 0.55);
+  box-shadow:   0 0 0 3px rgba(245, 158, 11, 0.08);
+}
+
+/* Fix: mobile dropdown full-width */
+@media (max-width: 639px) {
+  select.input {
+    width: 100%;
+  }
+}
+
+/* Fix: Improve color contrast for muted text throughout */
+.text-mid {
+  /* Ensure at least 4.5:1 contrast ratio on #0e0e10 background */
+  color: #a09e98 !important;
+}
+
+/* ── Landing Page Utilities ────────────────────────────────────────────────── */
+.animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+.animate-slide-up { animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+.glass-card {
+  background: rgba(22, 22, 26, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.carousel-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+}
